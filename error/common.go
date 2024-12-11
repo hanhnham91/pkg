@@ -66,7 +66,7 @@ func ErrValidation(err error, info ...string) MyError {
 
 func ErrBadRequest(info ...string) MyError {
 	var (
-		message    = "BadRequest."
+		message    = "Bad Request"
 		customCode = CustomCodeDefaultBadRequest
 	)
 
@@ -87,7 +87,7 @@ func ErrBadRequest(info ...string) MyError {
 
 func ErrInternalServerError(err error, info ...string) MyError {
 	var (
-		message    = "InternalServerError."
+		message    = "Internal Server Error"
 		customCode = CustomCodeDefaultInternalServerError
 	)
 
