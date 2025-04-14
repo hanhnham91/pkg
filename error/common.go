@@ -3,6 +3,7 @@ package pkgerror
 import (
 	"errors"
 	"fmt"
+	"net/http"
 	"regexp"
 	"strings"
 
@@ -47,6 +48,10 @@ func GetErrValidationMessage(err error) string {
 	return message
 }
 
+// ErrValidation info {0}: custom error code.
+// Use for the validator and validation func.
+// Lib `github.com/go-playground/validator/v10`
+// and our validations.
 func ErrValidation(err error, info ...string) MyError {
 	if err == nil {
 		return ErrBadRequest()
@@ -59,6 +64,7 @@ func ErrValidation(err error, info ...string) MyError {
 
 	return MyError{
 		Raw:       nil,
+		HTTPCode:  http.StatusBadRequest,
 		ErrorCode: customCode,
 		Message:   GetErrValidationMessage(err),
 	}
@@ -80,6 +86,73 @@ func ErrBadRequest(info ...string) MyError {
 
 	return MyError{
 		Raw:       nil,
+		HTTPCode:  http.StatusBadRequest,
+		ErrorCode: customCode,
+		Message:   message,
+	}
+}
+
+func ErrUnauthorized(info ...string) MyError {
+	var (
+		message    = "Unauthorized."
+		customCode = CustomCodeDefaultUnauthorized
+	)
+
+	if len(info) > 0 && strings.TrimSpace(info[0]) != "" {
+		message = info[0]
+	}
+
+	if len(info) > 1 && strings.TrimSpace(info[1]) != "" {
+		customCode = info[1]
+	}
+
+	return MyError{
+		Raw:       nil,
+		HTTPCode:  http.StatusUnauthorized,
+		ErrorCode: customCode,
+		Message:   message,
+	}
+}
+
+func ErrForbidden(info ...string) MyError {
+	var (
+		message    = "Forbidden."
+		customCode = CustomCodeDefaultForbidden
+	)
+
+	if len(info) > 0 && strings.TrimSpace(info[0]) != "" {
+		message = info[0]
+	}
+
+	if len(info) > 1 && strings.TrimSpace(info[1]) != "" {
+		customCode = info[1]
+	}
+
+	return MyError{
+		Raw:       nil,
+		HTTPCode:  http.StatusForbidden,
+		ErrorCode: customCode,
+		Message:   message,
+	}
+}
+
+func ErrNotFound(info ...string) MyError {
+	var (
+		message    = "NotFound."
+		customCode = CustomCodeDefaultNotFound
+	)
+
+	if len(info) > 0 && strings.TrimSpace(info[0]) != "" {
+		message = info[0]
+	}
+
+	if len(info) > 1 && strings.TrimSpace(info[1]) != "" {
+		customCode = info[1]
+	}
+
+	return MyError{
+		Raw:       nil,
+		HTTPCode:  http.StatusNotFound,
 		ErrorCode: customCode,
 		Message:   message,
 	}

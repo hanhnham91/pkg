@@ -7,6 +7,7 @@ import (
 type MyError struct {
 	Raw       error
 	ErrorCode string
+	HTTPCode  int
 	Message   string
 }
 
